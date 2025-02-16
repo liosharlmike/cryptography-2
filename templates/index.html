@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Encryption and Decryption</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>File Encryption and Decryption Using AES</h1>
+    <div>
+        <h2>Encrypt File</h2>
+        <form id="encryptForm">
+            <input type="file" name="file" required>
+            <button type="submit">Encrypt</button>
+        </form>
+        <p id="encryptionKey"></p>
+    </div>
+    <div>
+        <h2>Decrypt File</h2>
+        <form action="/decrypt" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <input type="text" name="key" placeholder="Enter decryption key" required>
+            <button type="submit">Decrypt</button>
+        </form>
+    </div>
+
+    <script>
+        // Handle encryption form submission
+        document.getElementById('encryptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', e.target.file.files[0]);
+    
+            const response = await fetch('/encrypt', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+    
+            // Display the encryption key to the user
+            document.getElementById('encryptionKey').innerText = `Encryption Key: ${data.key}`;
+    
+            // Trigger download of the encrypted file
+            const link = document.createElement('a');
+            link.href = `/download/${data.encrypted_file}`;
+            link.download = data.encrypted_file;
+            link.click();
+        });
+    </script>
+</body>
+</html>
