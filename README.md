@@ -12,4 +12,5 @@ This project implements a Flask-based web application for encrypting and decrypt
 1. Clone the repository:
    ```bash
    git clone https://github.com/liosharlmike/cryptography-2.git
-   cd file-encryption-project
+   cd cryptography-2
+   
